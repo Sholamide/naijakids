@@ -1,8 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Box, HStack } from "@chakra-ui/layout";
-import { Icon, Stack, Select, Text, Spinner } from "@chakra-ui/react";
+import { Icon, Stack, Select, Link, Text, Spinner } from "@chakra-ui/react";
 import { BsSearch, BsCaretDownFill } from "react-icons/bs";
+import { FaExternalLinkSquareAlt } from "react-icons/fa";
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/input";
 import { GameCard } from "./components/gameCard";
 import { GameGrid } from "./components/gameGrid";
@@ -99,15 +100,36 @@ function App() {
           py={{ base: "6", md: "8", lg: "12" }}
         >
           <Stack>
-            <Stack direction="row" spacing="10" justify="space-between">
+            <Stack spacing="4">
               <Image boxSize="150px" src="naijakidslogo.png" />
-              <Text as="i" fontSize="3xl">
-                <Typical
-                  steps={["Hi", 1000, "This is my one page catalogue for the react fonrt-end intenrship task", 500]}
-                  loop={Infinity}
-                  wrapper="p"
-                />
-              </Text>
+              <Stack direction="row" spacing="4" justify="space-between">
+                {" "}
+                <Text as="i" fontSize="xl">
+                  <Typical
+                    steps={[
+                      "Hi there 🙃🙃",
+                      1500,
+                      "This is my one page catalogue   for the react front-end internship task 🕶️🕺",
+                      1500,
+                      "This project was built using React and ChakraUI 😎🎩",
+                      1500,
+                    ]}
+                    loop={Infinity}
+                    wrapper="p"
+                  />
+                </Text>
+                <Stack>
+                  <Link
+                    fontWeight="bold"
+                    color="green.900"
+                    href="https://github.com/Sholamide/naijakids"
+                    isExternal
+                  >
+                    Github Repo
+                    <Icon as={FaExternalLinkSquareAlt} />
+                  </Link>
+                </Stack>
+              </Stack>
             </Stack>
           </Stack>
 
@@ -115,7 +137,7 @@ function App() {
             <InputGroup>
               <InputLeftElement
                 pointerEvents="none"
-                children={<Icon as={BsSearch} />}
+                children={<Icon as={BsSearch} px="4px" />}
               />
               <Input
                 variant="flushed"

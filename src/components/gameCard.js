@@ -22,7 +22,16 @@ export const GameCard = (props) => {
     GameImage,
   } = game;
   return (
-    <Stack spacing={useBreakpointValue({ base: "4", md: "5" })} {...rootProps}>
+    <Stack
+      bg="green.100"
+      borderWidth="5px"
+      borderColor="red.900"
+      borderRadius="base"
+      px={{ base: "4", md: "6" }}
+      py={{ base: "4", md: "6" }}
+      spacing={useBreakpointValue({ base: "4", md: "5" })}
+      {...rootProps}
+    >
       <Box position="relative">
         <AspectRatio>
           <Image
@@ -40,8 +49,12 @@ export const GameCard = (props) => {
       <Stack>
         <Stack spacing="1">
           <Text
+            bg="green.900"
+            p="10px"
+            mx="auto"
+            borderRadius="2xl"
             fontWeight="bold"
-            color={useColorModeValue("gray.700", "gray.400")}
+            color="white"
           >
             Title
           </Text>
@@ -52,7 +65,12 @@ export const GameCard = (props) => {
         <Stack spacing="1">
           <Text
             fontWeight="bold"
-            color={useColorModeValue("gray.700", "gray.400")}
+            bg="red.900"
+            p="5px"
+            mx="auto"
+            borderRadius="2xl"
+            color="white"
+            fontSize="sm"
           >
             Game Description
           </Text>

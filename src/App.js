@@ -1,25 +1,165 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Box, HStack } from "@chakra-ui/layout";
+import { Icon, Stack, Select, Text, Spinner } from "@chakra-ui/react";
+import { BsSearch, BsCaretDownFill } from "react-icons/bs";
+import { Input, InputGroup, InputLeftElement } from "@chakra-ui/input";
+import { GameCard } from "./components/gameCard";
+import { GameGrid } from "./components/gameGrid";
+import { Image } from "@chakra-ui/image";
+import Typical from "react-typical";
+
+const baseURL =
+  "https://partners.9ijakids.com/index.php?partnerId=555776&accessToken=l0lawtvv-94bv-oi4d-u808-5ubz&action=catalogfilter";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+  const [gamesList, setGamesList] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [searchText, setSearchText] = useState("");
+
+  const [groupFilterParams, setGroupFilterParams] = useState(["All"]);
+  const [levelFilterParams, setLevelFilterParams] = useState(["All"]);
+  const [searchParams] = useState(["Topic"]);
+
+  useEffect(() => {
+    axios.get(baseURL).then((response) => {
+      setIsLoaded(true);
+      setGamesList(response.data);
+    });
+  }, []);
+
+  function search(gamesList) {
+    return gamesList.filter((game) => {
+      if (game.Group == groupFilterParams) {
+        return searchParams.some((newGame) => {
+          return (
+            game[newGame]
+              .toString()
+              .toLowerCase()
+              .indexOf(searchText.toLowerCase()) > -1
+          );
+        });
+      }
+      if (game.Level == levelFilterParams) {
+        return searchParams.some((newGame) => {
+          return (
+            game[newGame]
+              .toString()
+              .toLowerCase()
+              .indexOf(searchText.toLowerCase()) > -1
+          );
+        });
+      }
+      if (game.Level == levelFilterParams && game.Group == groupFilterParams) {
+        return searchParams.some((newGame) => {
+          return (
+            game[newGame]
+              .toString()
+              .toLowerCase()
+              .indexOf(searchText.toLowerCase()) > -1
+          );
+        });
+      } else if (groupFilterParams == "All" && levelFilterParams == "All") {
+        return searchParams.some((newGame) => {
+          return (
+            game[newGame]
+              .toString()
+              .toLowerCase()
+              .indexOf(searchText.toLowerCase()) > -1
+          );
+        });
+      }
+    });
+  }
+
+  if (!isLoaded) {
+    return (
+      <Stack>
+        <Spinner
+          position="fixed"
+          left="0px"
+          right="0px"
+          zIndex="9999"
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      </Stack>
+    );
+  } else {
+    return (
+      <>
+        <Box
+          maxW="7xl"
+          mx="auto"
+          w="100%"
+          px={{ base: "4", md: "8", lg: "12" }}
+          py={{ base: "6", md: "8", lg: "12" }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+          <Stack>
+            <Stack direction="row" spacing="10" justify="space-between">
+              <Image boxSize="150px" src="naijakidslogo.png" />
+              <Text as="i" fontSize="3xl">
+                <Typical
+                  steps={["Hi", 1000, "This is my one page catalogue for the react fonrt-end intenrship task", 500]}
+                  loop={Infinity}
+                  wrapper="p"
+                />
+              </Text>
+            </Stack>
+          </Stack>
+
+          <HStack px="12px" py="18px" direction="row">
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents="none"
+                children={<Icon as={BsSearch} />}
+              />
+              <Input
+                variant="flushed"
+                placeholder="Search games by Topic"
+                onChange={(e) => setSearchText(e.target.value)}
+                value={searchText}
+              />
+            </InputGroup>
+
+            <Select
+              icon={<Icon as={BsCaretDownFill} />}
+              variant="filled"
+              aria-label="Filter games by Groups"
+              onChange={(e) => {
+                setGroupFilterParams(e.target.value);
+              }}
+            >
+              <option value="All">Filter Games by Groups</option>
+              <option value="Academic">Academic</option>
+              <option value="Financial Literacy">Financial Literacy </option>
+            </Select>
+            <Select
+              icon={<Icon as={BsCaretDownFill} />}
+              variant="filled"
+              aria-label="Filter games by Levels"
+              onChange={(e) => {
+                setLevelFilterParams(e.target.value);
+              }}
+            >
+              <option value="All">Filter Games by Levels</option>
+              <option value="Key Stage 1">Key Stage 1</option>
+              <option value="Financial Literacy">Financial Literacy</option>
+              <option value="Key Stage 2">Key Stage 2</option>
+            </Select>
+          </HStack>
+          <GameGrid>
+            {search(gamesList).map((game) => (
+              <GameCard key={game.GameTitle} game={game} />
+            ))}
+          </GameGrid>
+        </Box>
+      </>
+    );
+  }
 }
 
 export default App;

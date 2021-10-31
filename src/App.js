@@ -107,7 +107,7 @@ function App() {
                 <Text as="i" fontSize="xl">
                   <Typical
                     steps={[
-                      "Hi there 🙃🙃",
+                      "Hi there, my name is Olamide 🙃🙃",
                       1500,
                       "This is my one page catalogue   for the react front-end internship task 🕶️🕺",
                       1500,
